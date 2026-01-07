@@ -1,0 +1,56 @@
+<%- include('partials/header') %> 
+
+<div class="p-5 mb-4 bg-light rounded-3 text-center">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Welcome to EventApp</h1>
+        <p class="fs-4">Find and book the best events in your city.</p>
+        <% if(!locals.user) { %>
+            <a href="/auth/register" class="btn btn-primary btn-lg">Get Started</a>
+        <% } %>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <form action="/" method="GET" class="d-flex">
+            <input 
+                type="text" 
+                name="search" 
+                class="form-control me-2" 
+                placeholder="Search events (e.g. 'Oktoberfest')" 
+                value="<%= locals.search || '' %>"
+            >
+            <button type="submit" class="btn btn-outline-dark">Search</button>
+            <% if(locals.search) { %>
+                <a href="/" class="btn btn-link">Clear</a>
+            <% } %>
+        </form>
+    </div>
+</div>
+
+<h3 class="mt-5 mb-3">Upcoming Events</h3>
+<div class="row">
+    <% if(events && events.length > 0) { %>
+        <% events.forEach(event => { %>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= event.title %></h5>
+                        <p class="card-text"><%= event.description %></p>
+                        <p class="text-muted"><%= event.locationName %></p>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <a href="/event/<%= event._id %>" class="btn btn-outline-primary w-100">View Details</a>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <div class="col-12">
+            <div class="alert alert-info">No events found. Admin needs to add some!</div>
+        </div>
+    <% } %>
+</div>
+
+</body>
+</html>

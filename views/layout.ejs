@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Planner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <a class="navbar-brand" href="/">EventApp</a>
+        <div class="navbar-nav">
+            <% if(user) { %>
+                <span class="nav-item nav-link">Hello, <%= user.username %></span>
+                <% if(user.role === 'admin') { %>
+                    <a class="nav-item nav-link" href="/admin">Admin Panel</a>
+                <% } %>
+                <a class="nav-item nav-link" href="/auth/logout">Logout</a>
+            <% } else { %>
+                <a class="nav-item nav-link" href="/auth/login">Login</a>
+                <a class="nav-item nav-link" href="/auth/register">Register</a>
+            <% } %>
+        </div>
+    </nav>

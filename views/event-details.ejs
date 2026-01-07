@@ -1,0 +1,86 @@
+<%- include('partials/header') %> 
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Event Details</li>
+                </ol>
+            </nav>
+
+            <h1 class="display-4"><%= event.title %></h1>
+            <p class="lead text-muted"><%= event.locationName %></p>
+            
+            <hr>
+            
+            <h4>About this Event</h4>
+            <p><%= event.description %></p>
+            
+            <div class="card bg-light mt-4">
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col">
+                            <h5>Date</h5>
+                            <p class="mb-0"><%= new Date(event.date).toDateString() %></p>
+                        </div>
+                        <div class="col">
+                            <h5>Price</h5>
+                            <p class="mb-0 text-success fw-bold">$<%= event.price %></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <% if(locals.user) { %>
+                <form action="/book/<%= event._id %>" method="POST" class="mt-4">
+                    <button class="btn btn-primary btn-lg w-100 shadow">Book Ticket Now</button>
+                </form>
+            <% } else { %>
+                <div class="alert alert-warning mt-4 text-center">
+                    Please <a href="/auth/login">login</a> to book tickets.
+                </div>
+            <% } %>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Location Map</h5>
+                </div>
+                <div id="map" style="height: 100%; min-height: 400px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function initMap() {
+        // 1. Get coordinates from the server-side EJS variable
+        const eventLocation = { 
+            lat: Number('<%= event.lat %>') || 0, 
+            lng: Number('<%= event.lng %>') || 0 
+    };
+        
+        // 2. Create the map centered at that location
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 15,
+            center: eventLocation,
+        });
+
+        // 3. Add a red marker pin
+        const marker = new google.maps.Marker({
+            position: eventLocation,
+            map: map,
+            title: "<%= event.title %>" // Hover text
+        });
+    }
+</script>
+
+<script async defer 
+    src="https://maps.googleapis.com/maps/api/js?key=<%= mapKey %>&callback=initMap">
+</script>
+
+</body>
+</html>

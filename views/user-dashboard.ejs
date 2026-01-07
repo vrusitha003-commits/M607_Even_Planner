@@ -1,0 +1,67 @@
+<%- include('partials/header') %> 
+
+<div class="container mt-4">
+    <h2 class="mb-4">User Dashboard</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">My Bookings</h5>
+                </div>
+                <div class="card-body">
+                    <% if (bookings.length > 0) { %>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% bookings.forEach(booking => { %>
+                                    <tr>
+                                        <td><%= booking.event.title %></td>
+                                        <td><%= new Date(booking.event.date).toDateString() %></td>
+                                        <td><span class="badge bg-success"><%= booking.status %></span></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <p class="text-muted">You haven't booked any events yet.</p>
+                        <a href="/" class="btn btn-sm btn-outline-primary">Find Events</a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Profile Settings</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/profile/update" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" value="<%= user.username %>" required>
+                        </div>
+                        
+                        <hr>
+                        <h6 class="text-muted">Change Password</h6>
+                        <div class="mb-3">
+                            <label class="form-label small">New Password</label>
+                            <input type="password" name="newPassword" class="form-control" placeholder="Leave blank to keep current">
+                        </div>
+
+                        <button type="submit" class="btn btn-warning w-100">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
